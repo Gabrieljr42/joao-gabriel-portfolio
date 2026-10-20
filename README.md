@@ -58,7 +58,7 @@ Keep Vercel’s **Automatically expose System Environment Variables** setting en
 
 See [Vercel system environment variables](https://vercel.com/docs/environment-variables/system-environment-variables) and [Astro’s Vercel guide](https://docs.astro.build/en/guides/deploy/vercel/).
 
-Deployment status: source prepared for Vercel; a live deployment URL will be added after publication is verified.
+**Deployment status:** the source is pushed to this private GitHub repository. Vercel deployment is awaiting access to the owner’s `gabrieljr42s-projects` team. The preferred project name is `gabrieljr`, targeting `gabrieljr.vercel.app` if Vercel can assign it; that address has not been reserved or published. A verified live link will be added after deployment succeeds.
 
 ## Editing guide
 
