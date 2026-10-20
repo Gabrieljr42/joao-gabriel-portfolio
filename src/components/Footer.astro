@@ -1,0 +1,9 @@
+---
+import { site } from '../data/site';
+import Arrow from './Arrow.astro';
+const { compact = false } = Astro.props;
+---
+<footer class:list={['footer shell', { 'footer-compact': compact }]} id="contact">
+  {!compact && <div class="contact-block"><div><p class="muted">{site.contact.label}</p><h2>{site.contact.title.split('\n').map((line, i) => <>{i > 0 && <br />}{line}</>)}</h2></div><div class="contact-side"><a class="contact-orb" href={`mailto:${site.email}`} aria-label={site.contact.cta}><Arrow /></a><p>{site.contact.note}</p></div></div>}
+  <div class="footer-bottom"><span>© 2026 {site.name}<span class="footer-country"> / Brazil</span></span><div><a href={site.github} target="_blank" rel="noopener noreferrer">{site.labels.github}<Arrow /></a><a href={site.linkedin} target="_blank" rel="noopener noreferrer">{site.labels.linkedin}<Arrow /></a><a href="#top">{site.labels.backTop}<span aria-hidden="true">↑</span></a></div></div>
+</footer>

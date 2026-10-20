@@ -1,0 +1,9 @@
+---
+import { pipelineStages as stages, pipelineCopy } from '../data/site';
+---
+<figure class="pipeline" data-pipeline>
+  <div class="pipeline-heading"><div><span class="pipeline-count">{pipelineCopy.count}</span><span class="pipeline-count-label">{pipelineCopy.countLabel}</span></div><h2>{pipelineCopy.heading[0]}<br />{pipelineCopy.heading[1]}</h2></div>
+  <div class="pipeline-stages"><div class="pipeline-track" aria-hidden="true"><span data-pipeline-line></span></div>{stages.map((stage, i) => <button data-stage={i} data-explanation={stage.text} aria-pressed={i === 0}><span class="pipeline-node" aria-hidden="true">{i + 1}</span><strong>{stage.name}</strong><span class="pipeline-tools">{stage.tools}</span></button>)}</div>
+  <div class="pipeline-explanation" aria-live="polite"><p data-stage-copy>{stages[0].text}</p></div>
+  <figcaption>{pipelineCopy.caption}</figcaption>
+</figure>

@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import Footer from '../components/Footer.astro';
+import Arrow from '../components/Arrow.astro';
+import { site } from '../data/site';
+---
+<Base title="Page not found" description="This thread leads nowhere. Find your way back to João Gabriel’s selected engineering projects and portfolio.">
+  <section class="not-found shell"><div class="broken-thread" aria-hidden="true"><span></span><b>404</b><span></span></div><h1>{site.notFound.title.split('\n').map((line, i) => <>{i > 0 && <br />}{line}</>)}</h1><p>{site.notFound.text}</p><a class="button" href="/"><span>{site.notFound.cta}</span><Arrow /></a></section>
+  <Footer slot="footer" compact />
+</Base>
