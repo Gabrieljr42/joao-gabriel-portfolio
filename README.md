@@ -107,6 +107,8 @@ Optional local browser verification, with the production preview running:
 ```sh
 npx playwright install chromium
 node scripts/check-interactions.mjs http://127.0.0.1:4477
+node scripts/check-localization.mjs http://127.0.0.1:4477
+node scripts/check-locale-spacing.mjs
 ```
 
 Screenshots and browser reports are local QA evidence, excluded from Git. See `QA.md` for measured performance, coverage, and known limits.
