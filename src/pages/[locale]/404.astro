@@ -1,0 +1,6 @@
+---
+import NotFound from '../../views/NotFound.astro';
+import { locales } from '../../i18n/routing';
+export function getStaticPaths() { return locales.map(locale => ({ params: { locale }, props: { locale } })); }
+---
+<NotFound locale={Astro.props.locale} />

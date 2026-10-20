@@ -12,7 +12,8 @@ if (process.env.VERCEL && !configuredOrigin) {
 
 export default defineConfig({
   site: configuredOrigin || 'http://localhost:4477',
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: page => /^\/(en|pt-br)\/(?!404(?:\/|$))/.test(new URL(page).pathname) })],
+  i18n: { defaultLocale: 'en', locales: ['en', 'pt-br'], routing: { prefixDefaultLocale: true, redirectToDefaultLocale: false } },
   prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   build: { inlineStylesheets: 'auto' },
 });

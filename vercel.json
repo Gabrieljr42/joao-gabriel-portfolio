@@ -4,5 +4,79 @@
   "buildCommand": "npm run build",
   "installCommand": "npm ci",
   "outputDirectory": "dist",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/:path((?!en(?:/|$)|pt-br(?:/|$)|_astro(?:/|$)|fonts(?:/|$)|.*\\.[^/]+$).*)",
+      "has": [
+        {
+          "type": "cookie",
+          "key": "portfolio-language",
+          "value": "pt-br"
+        }
+      ],
+      "destination": "/pt-br/:path*",
+      "permanent": false
+    },
+    {
+      "source": "/:path((?!en(?:/|$)|pt-br(?:/|$)|_astro(?:/|$)|fonts(?:/|$)|.*\\.[^/]+$).*)",
+      "has": [
+        {
+          "type": "cookie",
+          "key": "portfolio-language",
+          "value": "en"
+        }
+      ],
+      "destination": "/en/:path*",
+      "permanent": false
+    },
+    {
+      "source": "/:path((?!en(?:/|$)|pt-br(?:/|$)|_astro(?:/|$)|fonts(?:/|$)|.*\\.[^/]+$).*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "x-vercel-ip-country",
+          "value": "BR"
+        }
+      ],
+      "destination": "/pt-br/:path*",
+      "permanent": false
+    },
+    {
+      "source": "/:path((?!en(?:/|$)|pt-br(?:/|$)|_astro(?:/|$)|fonts(?:/|$)|.*\\.[^/]+$).*)",
+      "destination": "/en/:path*",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
+      "source": "/:path((?!en(?:/|$)|pt-br(?:/|$)|_astro(?:/|$)|fonts(?:/|$)|.*\\.[^/]+$).*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
+        },
+        {
+          "key": "Vary",
+          "value": "Cookie, x-vercel-ip-country"
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/pt-br/.*",
+      "dest": "/pt-br/404/index.html",
+      "status": 404
+    },
+    {
+      "src": "/en/.*",
+      "dest": "/en/404/index.html",
+      "status": 404
+    }
+  ],
+  "trailingSlash": true
 }

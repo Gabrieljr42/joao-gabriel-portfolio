@@ -1,0 +1,10 @@
+---
+import { ui } from '../i18n/ui';
+import { localizedPath, type Locale } from '../i18n/routing';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+---
+<nav class="language-switcher" aria-label={ui[locale].language}>
+  <a href={localizedPath(Astro.url.pathname, 'en')} lang="en" hreflang="en" aria-label="EN: English" aria-current={locale === 'en' ? 'true' : undefined} data-language="en" data-astro-reload>EN</a>
+  <a href={localizedPath(Astro.url.pathname, 'pt-br')} lang="pt-BR" hreflang="pt-BR" aria-label="PT-BR: Português do Brasil" aria-current={locale === 'pt-br' ? 'true' : undefined} data-language="pt-br" data-astro-reload>PT-BR</a>
+</nav>

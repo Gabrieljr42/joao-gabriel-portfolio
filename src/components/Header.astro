@@ -1,12 +1,20 @@
 ---
-import { site } from '../data/site';
+import { getContent } from '../i18n/content';
+import { localizedPath, withoutLocale, type Locale } from '../i18n/routing';
 import Arrow from './Arrow.astro';
-const isHome = Astro.url.pathname === '/';
-const isWork = Astro.url.pathname.startsWith('/work/');
-const isAbout = Astro.url.pathname === '/background/';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const { site, ui } = getContent(locale);
+const href = (path: string) => localizedPath(path, locale);
+const path = withoutLocale(Astro.url.pathname);
+const isHome = path === '/';
+const isWork = path.startsWith('/work/');
+const isAbout = path === '/background/';
 ---
 <header class="header shell">
-  <a class="brand" href="/" aria-label={`jg. ${site.name}, home`} aria-current={isHome ? 'page' : undefined}><span class="monogram" aria-hidden="true">jg<span>.</span></span><span>{site.name}</span></a>
+  <a class="brand" href={href('/')} aria-label={`jg. ${site.name}, ${ui.home}`} aria-current={isHome ? 'page' : undefined}><span class="monogram" aria-hidden="true">jg<span>.</span></span><span>{site.name}</span></a>
   <span class="header-role">{site.role}<br /><span>{site.specialty}</span></span>
-  <nav aria-label="Main navigation"><a class="nav-link" href="/#work" aria-current={isWork ? 'page' : undefined}>{site.nav.work}<span class="nav-dot" aria-hidden="true"></span></a><a class="nav-link" href="/background/" aria-current={isAbout ? 'page' : undefined}>{site.nav.about}<span class="nav-dot" aria-hidden="true"></span></a><a class="contact-link" href={`mailto:${site.email}`}><span>{site.nav.contact}</span><Arrow /></a></nav>
+  <nav aria-label={ui.navigation}><a class="nav-link" href={href('/#work')} aria-current={isWork ? 'page' : undefined}>{site.nav.work}<span class="nav-dot" aria-hidden="true"></span></a><a class="nav-link" href={href('/background/')} aria-current={isAbout ? 'page' : undefined}>{site.nav.about}<span class="nav-dot" aria-hidden="true"></span></a><a class="contact-link" href={`mailto:${site.email}`}><span>{site.nav.contact}</span><Arrow /></a></nav>
+  <LanguageSwitcher locale={locale} />
 </header>

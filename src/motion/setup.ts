@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { onPage, setTransition, ease, prefersReducedMotion } from '../engine';
-import { practices } from '../data/site';
+type Practice = { label: string; project: string; href: string; nodes: string[]; trace: string; actions: string[] };
 
 export function setupMotion() {
   onPage(() => {
@@ -38,6 +38,9 @@ export function setupMotion() {
     const form = document.querySelector<SVGGElement>('[data-signal-form]');
     const root = document.querySelector<HTMLElement>('[data-signal]');
     if (!form || !root) return;
+    const practices: Practice[] = JSON.parse(root.dataset.practices || '[]');
+    if (!practices.length) return;
+    const traceHint = root.dataset.traceHint || '';
     const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-practice]')];
     const label = document.querySelector<HTMLElement>('[data-practice-label]');
     const nodeLabels = [...root.querySelectorAll<HTMLElement>('[data-node-label]')];
@@ -79,7 +82,7 @@ export function setupMotion() {
       stage = -1;
       nodeLabels.forEach((node, i) => node.textContent = practice.nodes[i]);
       if (traceLabel) traceLabel.textContent = practice.trace;
-      if (traceStatus) traceStatus.textContent = 'Follow the project’s data flow.';
+      if (traceStatus) traceStatus.textContent = traceHint;
       renderTrace();
       if (project) { project.firstChild!.textContent = practice.project; project.href = practice.href; }
       if (reduced) return;

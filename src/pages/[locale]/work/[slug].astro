@@ -1,0 +1,7 @@
+---
+import CaseStudy from '../../../views/CaseStudy.astro';
+import { projects } from '../../../data/site';
+import { locales } from '../../../i18n/routing';
+export function getStaticPaths() { return locales.flatMap(locale => projects.map(project => ({ params: { locale, slug: project.slug }, props: { locale, slug: project.slug } }))); }
+---
+<CaseStudy locale={Astro.props.locale} slug={Astro.props.slug} />

@@ -1,0 +1,6 @@
+---
+import Home from '../../views/Home.astro';
+import { locales } from '../../i18n/routing';
+export function getStaticPaths() { return locales.map(locale => ({ params: { locale }, props: { locale } })); }
+---
+<Home locale={Astro.props.locale} />

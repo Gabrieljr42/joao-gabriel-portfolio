@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import Footer from '../components/Footer.astro';
+import Arrow from '../components/Arrow.astro';
+import { getContent } from '../i18n/content';
+import { localizedPath, type Locale } from '../i18n/routing';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const { site, background, ui } = getContent(locale);
+const href = (path: string) => localizedPath(path, locale);
+---
+<Base locale={locale} title={ui.backgroundTitle} description={ui.backgroundDescription}>
+  <div class="background shell">
+    <section class="background-hero" aria-labelledby="background-title">
+      <a class="text-link" href={href('/#about')}><span>{ui.backIntro}</span><Arrow /></a>
+      <h1 id="background-title">{background.title[0]}<br /><span>{background.title[1]}</span></h1>
+      <div class="background-deck"><p>{background.intro}</p><span>{background.location}</span></div>
+      <nav class="background-index" aria-label={ui.backgroundSections}><a href="#experience">{ui.experience}<Arrow direction="down" /></a><a href="#education">{ui.education}<Arrow direction="down" /></a><a href="#credentials">{ui.credentials}<Arrow direction="down" /></a></nav>
+    </section>
+    <section class="background-section" id="experience" aria-labelledby="experience-title">
+      <div class="background-label"><p class="section-label">{ui.inPractice}</p><h2 id="experience-title">{ui.workBehind[0]}<br />{ui.workBehind[1]}</h2></div>
+      <div class="experience-list">{background.experience.map(job => <article><p class="period">{job.period}</p><h3>{job.company}</h3><p class="job-role">{job.role}</p><p class="muted">{job.text}</p></article>)}</div>
+    </section>
+    <section class="background-section education-section" id="education" aria-labelledby="education-title">
+      <div class="background-label"><p class="section-label">{ui.formalEducation}</p><h2 id="education-title">{ui.foundation[0]}<br />{ui.foundation[1]}</h2></div>
+      <div class="education-list">{background.education.map((education, i) => <article class={i === 0 ? 'education-current' : ''}><div class="education-meta"><span>{education.level}</span><span class="education-status">{education.status}</span></div><p class="institution">{education.institution}</p><h3>{education.title}</h3><p class="period">{education.period}</p><p class="muted">{education.text}</p></article>)}</div>
+    </section>
+    <section class="credentials-section" id="credentials" aria-labelledby="credentials-title">
+      <div class="section-top"><div><p class="section-label">{ui.professionalLearning}</p><h2 id="credentials-title">{ui.connections}</h2></div><p class="section-intro">{ui.courseNote}</p></div>
+      <ul class="credential-list">{background.certificates.map(certificate => <li><a href={`https://cursos.alura.com.br/certificate/${certificate.id}`} target="_blank" rel="noopener noreferrer"><div class="credential-meta"><span>{certificate.issuer}</span><time>{certificate.date}</time></div><div><h3 lang="pt-BR">{certificate.title}</h3><p>{certificate.description}</p></div><span class="credential-action">{ui.credentialLink}<Arrow /></span></a></li>)}</ul>
+      <div class="background-source"><p>{background.note}</p><a class="text-link" href={site.linkedin} target="_blank" rel="noopener noreferrer"><span>{ui.linkedinProfile}</span><Arrow /></a></div>
+    </section>
+    <a class="next-project" href={href('/#work')}><span>{ui.intoPractice}</span><strong>{ui.explore}</strong><Arrow /></a>
+  </div>
+  <Footer locale={locale} slot="footer" compact />
+</Base>

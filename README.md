@@ -58,11 +58,32 @@ Keep Vercel’s **Automatically expose System Environment Variables** setting en
 
 See [Vercel system environment variables](https://vercel.com/docs/environment-variables/system-environment-variables) and [Astro’s Vercel guide](https://docs.astro.build/en/guides/deploy/vercel/).
 
-**Deployment status:** the source is pushed to this private GitHub repository. Vercel deployment is awaiting access to the owner’s `gabrieljr42s-projects` team. The preferred project name is `gabrieljr`, targeting `gabrieljr.vercel.app` if Vercel can assign it; that address has not been reserved or published. A verified live link will be added after deployment succeeds.
+**Live site:** [gabrieljr.vercel.app](https://gabrieljr.vercel.app). The Vercel project is linked to this repository. Pushes to `main` deploy to production; other branches receive previews.
+
+## Languages and country defaults
+
+The complete site is available in [English](https://gabrieljr.vercel.app/en/) and [Brazilian Portuguese](https://gabrieljr.vercel.app/pt-br/), including case studies, background, education, certificates, image descriptions, navigation, and interactive explanations.
+
+- Unprefixed entry links use Vercel’s country header: `BR` selects `/pt-br/`; every other or unknown country selects `/en/`.
+- The visible **EN / PT-BR** control preserves the current page, query string, and section anchor.
+- An explicit choice is remembered for one year in the first-party `portfolio-language` cookie and takes priority over country detection.
+- Explicit `/en/` and `/pt-br/` links always keep their requested language, so shared links and bookmarks are stable. Assets are excluded from language redirects.
+- Both versions are prebuilt HTML, with their own `lang`, canonical, Open Graph locale, and `hreflang` alternates. Localized missing-page routes retain HTTP 404 on Vercel.
+- Country detection uses the hosting platform’s IP-derived country, without browser location permission or a third-party geolocation request. VPNs and proxies can change the detected country; the language control remains available.
+
+On a plain local Astro preview, unprefixed links default to English unless a saved choice exists. Vercel’s country-aware CDN rules run after deployment. Browser language does not stand in for country detection.
+
+```sh
+node scripts/check-localization.mjs http://127.0.0.1:4477
+```
 
 ## Editing guide
 
-- `src/data/site.ts`: biography, contact, projects, case studies, experience, education, and credentials.
+- `src/data/site.ts`: English biography, contact, projects, case studies, experience, education, and credentials.
+- `src/i18n/pt-br.ts`: complete Brazilian Portuguese content.
+- `src/i18n/ui.ts`: navigation, controls, and metadata in both languages.
+- `src/views/`: shared page templates used by both locale routes.
+- `vercel.json`: cookie and country routing, asset exclusions, and localized 404 handling.
 - `src/pages/`: homepage, background page, project routes, robots, and designed 404.
 - `src/styles/site.css`: visual system and responsive layouts.
 - `src/components/Signal.astro`: procedural SVG sculpture and data-flow labels.

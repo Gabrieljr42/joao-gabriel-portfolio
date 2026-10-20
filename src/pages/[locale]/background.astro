@@ -1,0 +1,6 @@
+---
+import Background from '../../views/Background.astro';
+import { locales } from '../../i18n/routing';
+export function getStaticPaths() { return locales.map(locale => ({ params: { locale }, props: { locale } })); }
+---
+<Background locale={Astro.props.locale} />

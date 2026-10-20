@@ -93,3 +93,8 @@ Third-pass signature refinement: the hero now makes Input, System and Output rea
 Final verification: independent score 8.0 overall, each main category 8; developer areas at least 8, WPO 9. Active-page navigation now translates its dot on hover/focus, full-size image links support phone inspection, and the mobile pipeline title stacks beneath the source count. The final 25 journey checks pass with no runtime errors.
 
 Deployment preparation: the owner selected GitHub and Vercel and authorized publication. The initial proposed GitHub Pages origin is superseded by the production host supplied by Vercel or an explicit SITE_URL. Configured-origin checks cover canonical, Open Graph, sitemap, and robots.
+
+
+## Brazilian Portuguese and English
+
+The owner requested Brazilian Portuguese by default for visitors in Brazil and English elsewhere, with an explicit switch. Preserve the visual language and genuine project imagery. Both locales are static routes with shared templates; Portuguese copy is authored in full, including metadata, alt text, accessibility labels, case-study decisions, and interactive traces. The persistent header control reads EN / PT-BR and has a deliberate two-row phone layout. Country and cookie redirects run as static Vercel CDN rules, avoiding extra runtime functions and geolocation services. Explicit locale URLs remain stable. Manual choices take priority over country and persist in a first-party cookie. Headlines and long Portuguese labels use tuned responsive measures.

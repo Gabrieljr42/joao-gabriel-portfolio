@@ -2,7 +2,7 @@
 import fs from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { chromium } from 'playwright';
-const origin = process.argv[2] || 'http://127.0.0.1:4477';
+const origin = `${new URL(process.argv[2] || 'http://127.0.0.1:4477').origin}/en`;
 const out = process.env.QA_OUT || '.shots/interaction';
 await fs.mkdir(out, { recursive: true });
 const browser = await chromium.launch();
@@ -45,7 +45,7 @@ try {
     await page.getByRole('button', { name, exact: true }).press('Enter');
     await page.waitForTimeout(1200);
     const target = await page.locator('[data-practice-project]').getAttribute('href');
-    assert(target === `/work/${slug}/`, `${name} links to the wrong project`);
+    assert(target === `/en/work/${slug}/`, `${name} links to the wrong project`);
     const pressed = await page.getByRole('button', { name, exact: true }).getAttribute('aria-pressed');
     assert(pressed === 'true', `${name} selection was not announced`);
     await page.screenshot({ path: `${out}/home-${slug}.png` });
@@ -131,14 +131,14 @@ try {
   reducedPage.on('pageerror', e => errors.push(e.message));
   await reducedPage.goto(origin);
   await reducedPage.getByRole('button', { name: 'Applied AI', exact: true }).press('Enter');
-  assert((await reducedPage.locator('[data-practice-project]').getAttribute('href')) === '/work/pensieve/', 'Reduced-motion selector failed');
+  assert((await reducedPage.locator('[data-practice-project]').getAttribute('href')) === '/en/work/pensieve/', 'Reduced-motion selector failed');
   await reducedPage.locator('[data-trace]').press('Enter');
   assert((await reducedPage.locator('[data-trace-status]').innerText()) === 'Open the cited answer', 'Reduced trace did not show complete result');
   const response = await reducedPage.goto(`${origin}/not-found-verification`);
   assert(response.status() === 404, 'Missing routes must return HTTP 404');
   assert((await reducedPage.locator('h1').innerText()).includes('thread'), 'Designed 404 did not render');
   await reducedPage.getByRole('link', { name: 'Back to home', exact: true }).click();
-  await reducedPage.waitForURL(u => u.pathname === '/');
+  await reducedPage.waitForURL(u => u.pathname === '/en/');
   await reducedPage.goBack();
   await reducedPage.waitForURL('**/not-found-verification');
   await reducedPage.waitForFunction(() => document.querySelector('h1')?.textContent.includes('thread'), null, { timeout: 10000 });

@@ -5,7 +5,7 @@ const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
 const results=[];
 try {
  for(const slug of ['pensieve','observador']) {
-  await page.goto(`http://127.0.0.1:4477/work/${slug}/`);
+  await page.goto(`http://127.0.0.1:4477/en/work/${slug}/`);
   await page.evaluate(() => document.fonts.ready);
   await page.locator('.case-cover img').evaluate(image => image.decode());
   await page.waitForTimeout(1200);

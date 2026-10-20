@@ -1,5 +1,8 @@
 ---
-import { practices } from '../data/site';
+import { getContent } from '../i18n/content';
+import type { Locale } from '../i18n/routing';
+interface Props { locale: Locale; }
+const { practices, ui } = getContent(Astro.props.locale);
 import Arrow from './Arrow.astro';
 // Code-native art: three engineering disciplines, woven into one system.
 const strands = Array.from({ length: 100 }, (_, i) => {
@@ -17,7 +20,7 @@ const strands = Array.from({ length: 100 }, (_, i) => {
   return { path: points, group: i % 3, opacity: .25 + Math.sin(offset * Math.PI) * .55 };
 });
 ---
-<div class="signal" data-signal>
+<div class="signal" data-signal data-practices={JSON.stringify(practices)} data-trace-hint={ui.traceHint}>
   <div class="signal-visual">
   <svg viewBox="0 0 600 600" class="signal-svg" fill="none" aria-hidden="true">
     <defs><linearGradient id="copper" x1="80" y1="500" x2="450" y2="80" gradientUnits="userSpaceOnUse"><stop stop-color="#63554a"/><stop offset=".36" stop-color="#ce997b"/><stop offset=".62" stop-color="#f3d5bd"/><stop offset="1" stop-color="#e6a27e"/></linearGradient></defs>
@@ -25,7 +28,7 @@ const strands = Array.from({ length: 100 }, (_, i) => {
     <g class="signal-guide"><path data-trace-segment d="M300 130 C430 70 550 180 500 310"/><path data-trace-segment d="M500 310 C455 450 290 510 160 430"/><circle cx="300" cy="130" r="4"/><circle cx="500" cy="310" r="4"/><circle cx="160" cy="430" r="4"/></g>
     <circle data-signal-packet cx="300" cy="130" r="6" fill="#f3d5bd" />
   </svg>
-  <ol class="signal-nodes" aria-label="Selected project data flow">{['Input', 'System', 'Output'].map((label, i) => <li data-signal-node={i}><span>{label}</span><strong data-node-label>{practices[0].nodes[i]}</strong></li>)}</ol>
+  <ol class="signal-nodes" aria-label={ui.flowLabel}>{ui.flow.map((label, i) => <li data-signal-node={i}><span>{label}</span><strong data-node-label>{practices[0].nodes[i]}</strong></li>)}</ol>
   </div>
-  <div class="signal-walkthrough"><button class="trace-button" data-trace><span data-trace-label>{practices[0].trace}</span><Arrow /></button><p data-trace-status aria-live="polite">Follow the project’s data flow.</p></div>
+  <div class="signal-walkthrough"><button class="trace-button" data-trace><span data-trace-label>{practices[0].trace}</span><Arrow /></button><p data-trace-status aria-live="polite">{ui.traceHint}</p></div>
 </div>

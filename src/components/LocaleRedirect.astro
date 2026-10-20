@@ -1,0 +1,16 @@
+---
+interface Props { path: string; }
+const { path } = Astro.props;
+const destinations = { en: `/en${path}`, 'pt-br': `/pt-br${path}` };
+---
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>João Gabriel</title><meta name="robots" content="noindex" />
+<script is:inline define:vars={{ destinations }}>
+  const preferred = document.cookie.split('; ').find(value => value.startsWith('portfolio-language='))?.split('=')[1];
+  const target = new URL(preferred === 'pt-br' ? destinations['pt-br'] : destinations.en, location.origin);
+  target.search = location.search;
+  target.hash = location.hash;
+  location.replace(target.href);
+</script>
+<noscript><meta http-equiv="refresh" content={`0;url=${destinations.en}`} /></noscript>
+</head><body><a href={destinations.en}>English</a> <a href={destinations['pt-br']} lang="pt-BR">Português do Brasil</a></body></html>

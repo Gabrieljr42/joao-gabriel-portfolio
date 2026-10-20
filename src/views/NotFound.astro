@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import Footer from '../components/Footer.astro';
+import Arrow from '../components/Arrow.astro';
+import { getContent } from '../i18n/content';
+import { localizedPath, type Locale } from '../i18n/routing';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const { site, ui } = getContent(locale);
+const href = (path: string) => localizedPath(path, locale);
+---
+<Base locale={locale} title={ui.notFoundTitle} description={site.notFound.text}>
+  <section class="not-found shell"><div class="broken-thread" aria-hidden="true"><span></span><b>404</b><span></span></div><h1>{site.notFound.title.split('\n').map((line, i) => <>{i > 0 && <br />}{line}</>)}</h1><p>{site.notFound.text}</p><a class="button" href={href('/')}><span>{site.notFound.cta}</span><Arrow /></a></section>
+  <Footer locale={locale} slot="footer" compact />
+</Base>

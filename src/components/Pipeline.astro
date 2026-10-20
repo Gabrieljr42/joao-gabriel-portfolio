@@ -1,5 +1,8 @@
 ---
-import { pipelineStages as stages, pipelineCopy } from '../data/site';
+import { getContent } from '../i18n/content';
+import type { Locale } from '../i18n/routing';
+interface Props { locale: Locale; }
+const { pipelineStages: stages, pipelineCopy } = getContent(Astro.props.locale);
 ---
 <figure class="pipeline" data-pipeline>
   <div class="pipeline-heading"><div><span class="pipeline-count">{pipelineCopy.count}</span><span class="pipeline-count-label">{pipelineCopy.countLabel}</span></div><h2>{pipelineCopy.heading[0]}<br />{pipelineCopy.heading[1]}</h2></div>

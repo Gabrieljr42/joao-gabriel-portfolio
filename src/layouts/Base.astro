@@ -1,22 +1,32 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import { site } from '../data/site';
+import { getContent } from '../i18n/content';
+import { localizedPath, withoutLocale, type Locale } from '../i18n/routing';
 import Header from '../components/Header.astro';
 import '../styles/site.css';
-interface Props { title?: string; description?: string; }
-const { title, description = site.description } = Astro.props;
-const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | Software engineer`;
+interface Props { locale: Locale; title?: string; description?: string; }
+const { locale, title } = Astro.props;
+const { site, ui } = getContent(locale);
+const description = Astro.props.description || site.description;
+const barePath = withoutLocale(Astro.url.pathname);
+const alternate = (language: Locale) => new URL(localizedPath(barePath, language), site.url).href;
+const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | ${ui.pageTitle}`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
-const jsonLd = { '@context': 'https://schema.org', '@type': 'Person', name: site.fullName, jobTitle: site.role, url: site.url, sameAs: [site.github, site.linkedin], knowsAbout: ['Backend engineering', 'Applied AI', 'Software development'], email: `mailto:${site.email}`, alumniOf: { '@type': 'EducationalOrganization', name: 'Instituto Federal de Minas Gerais' } };
+const jsonLd = { '@context': 'https://schema.org', '@type': 'Person', name: site.fullName, jobTitle: site.role, url: site.url, sameAs: [site.github, site.linkedin], knowsAbout: locale === 'pt-br' ? ['Engenharia backend', 'Inteligência artificial aplicada', 'Desenvolvimento de software'] : ['Backend engineering', 'Applied AI', 'Software development'], email: `mailto:${site.email}`, alumniOf: { '@type': 'EducationalOrganization', name: 'Instituto Federal de Minas Gerais' } };
 ---
 <!doctype html>
-<html lang="en" transition:animate="none">
+<html lang={locale === 'pt-br' ? 'pt-BR' : 'en'} transition:animate="none">
   <head>
     <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title><meta name="description" content={description} /><link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#151717" /><link rel="icon" href="/favicon.svg" type="image/svg+xml" /><link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta property="og:type" content="website" /><meta property="og:title" content={fullTitle} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={new URL('/og.png', site.url).href} /><meta name="twitter:card" content="summary_large_image" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" hreflang="en" href={alternate('en')} />
+    <link rel="alternate" hreflang="pt-BR" href={alternate('pt-br')} />
+    <link rel="alternate" hreflang="x-default" href={new URL(barePath, site.url).href} />
+    <meta property="og:locale" content={locale === 'pt-br' ? 'pt_BR' : 'en_US'} />
+    <meta property="og:locale:alternate" content={locale === 'pt-br' ? 'en_US' : 'pt_BR'} />
     <link rel="preload" href="/fonts/switzer-400-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/switzer-500-normal.woff2" as="font" type="font/woff2" crossorigin />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
@@ -25,12 +35,14 @@ const jsonLd = { '@context': 'https://schema.org', '@type': 'Person', name: site
   <body id="top">
     <a class="skip-link" href="#main">{site.labels.skip}</a>
     <div id="curtain" transition:persist="curtain" aria-hidden="true"><div class="curtain__panel"><span>jg.</span><div class="curtain-thread"></div></div></div>
-    <Header />
+    <Header locale={locale} />
     <main id="main" tabindex="-1"><slot /></main>
     <slot name="footer" />
     <script>
       import { start } from '../engine/astro';
       import { setupMotion } from '../motion/setup';
+      import { setupLanguageSwitcher } from '../i18n/client';
+      setupLanguageSwitcher();
       start(setupMotion);
     </script>
   </body>
