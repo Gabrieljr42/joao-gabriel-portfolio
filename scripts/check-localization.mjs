@@ -9,12 +9,11 @@ await fs.mkdir(out, { recursive: true });
 const config = JSON.parse(await fs.readFile('vercel.json', 'utf8'));
 const results = [];
 function redirect(path, country, preference) {
-  for (const rule of config.redirects) {
-    const pattern = rule.source.match(/^\/:path\((.*)\)$/)[1];
-    const match = path.match(new RegExp(`^/(${pattern})$`));
+  for (const rule of config.routes.filter(route => route.status === 307)) {
+    const match = path.match(new RegExp(rule.src));
     if (!match) continue;
     if (rule.has?.some(condition => (condition.type === 'cookie' ? preference : country) !== condition.value)) continue;
-    return rule.destination.replace(':path*', match[1]);
+    return rule.headers.Location.replace('$1', match[1]);
   }
   return null;
 }

@@ -4,10 +4,9 @@
   "buildCommand": "npm run build",
   "installCommand": "npm ci",
   "outputDirectory": "dist",
-  "cleanUrls": true,
-  "redirects": [
+  "routes": [
     {
-      "source": "/:path((?!en(?:/|$)|pt-br(?:/|$)|_astro(?:/|$)|fonts(?:/|$)|.*\\.[^/]+$).*)",
+      "src": "^/((?!en(?:/|$)|pt-br(?:/|$)|_astro(?:/|$)|fonts(?:/|$)|.*\\.[^/]+$).*)$",
       "has": [
         {
           "type": "cookie",
@@ -15,11 +14,15 @@
           "value": "pt-br"
         }
       ],
-      "destination": "/pt-br/:path*",
-      "permanent": false
+      "headers": {
+        "Location": "/pt-br/$1",
+        "Cache-Control": "private, no-store",
+        "Vary": "Cookie, x-vercel-ip-country"
+      },
+      "status": 307
     },
     {
-      "source": "/:path((?!en(?:/|$)|pt-br(?:/|$)|_astro(?:/|$)|fonts(?:/|$)|.*\\.[^/]+$).*)",
+      "src": "^/((?!en(?:/|$)|pt-br(?:/|$)|_astro(?:/|$)|fonts(?:/|$)|.*\\.[^/]+$).*)$",
       "has": [
         {
           "type": "cookie",
@@ -27,11 +30,15 @@
           "value": "en"
         }
       ],
-      "destination": "/en/:path*",
-      "permanent": false
+      "headers": {
+        "Location": "/en/$1",
+        "Cache-Control": "private, no-store",
+        "Vary": "Cookie, x-vercel-ip-country"
+      },
+      "status": 307
     },
     {
-      "source": "/:path((?!en(?:/|$)|pt-br(?:/|$)|_astro(?:/|$)|fonts(?:/|$)|.*\\.[^/]+$).*)",
+      "src": "^/((?!en(?:/|$)|pt-br(?:/|$)|_astro(?:/|$)|fonts(?:/|$)|.*\\.[^/]+$).*)$",
       "has": [
         {
           "type": "header",
@@ -39,31 +46,22 @@
           "value": "BR"
         }
       ],
-      "destination": "/pt-br/:path*",
-      "permanent": false
+      "headers": {
+        "Location": "/pt-br/$1",
+        "Cache-Control": "private, no-store",
+        "Vary": "Cookie, x-vercel-ip-country"
+      },
+      "status": 307
     },
     {
-      "source": "/:path((?!en(?:/|$)|pt-br(?:/|$)|_astro(?:/|$)|fonts(?:/|$)|.*\\.[^/]+$).*)",
-      "destination": "/en/:path*",
-      "permanent": false
-    }
-  ],
-  "headers": [
-    {
-      "source": "/:path((?!en(?:/|$)|pt-br(?:/|$)|_astro(?:/|$)|fonts(?:/|$)|.*\\.[^/]+$).*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "private, no-store"
-        },
-        {
-          "key": "Vary",
-          "value": "Cookie, x-vercel-ip-country"
-        }
-      ]
-    }
-  ],
-  "routes": [
+      "src": "^/((?!en(?:/|$)|pt-br(?:/|$)|_astro(?:/|$)|fonts(?:/|$)|.*\\.[^/]+$).*)$",
+      "headers": {
+        "Location": "/en/$1",
+        "Cache-Control": "private, no-store",
+        "Vary": "Cookie, x-vercel-ip-country"
+      },
+      "status": 307
+    },
     {
       "handle": "filesystem"
     },
@@ -77,6 +75,5 @@
       "dest": "/en/404/index.html",
       "status": 404
     }
-  ],
-  "trailingSlash": true
+  ]
 }
