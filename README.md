@@ -4,7 +4,7 @@
 
 My engineering portfolio connects backend systems, applied AI, and useful products through an interactive input → system → output flow. It includes four project case studies, professional experience, education, credentials, and open-source contributions.
 
-[GitHub profile](https://github.com/Gabrieljr42) · [LinkedIn](https://www.linkedin.com/in/joao-gabriel-alves-junior/)
+[Live Site](https://gabrieljr.vercel.app) · [GitHub Profile](https://github.com/Gabrieljr42) · [LinkedIn](https://www.linkedin.com/in/joao-gabriel-alves-junior/)
 
 ![Portfolio homepage](public/og.png)
 
@@ -91,7 +91,7 @@ node scripts/check-localization.mjs http://127.0.0.1:4477
 - `astro.config.mjs`: production origin and sitemap.
 - `DESIGN.md`: concept and design decisions.
 - `CONTENT_SOURCES.md`: project and professional-information provenance.
-- `QA.md`: verification results and independent critique.
+- `QA.md`: verification results, automated audit records, and performance metrics.
 
 ## Verification
 
@@ -100,7 +100,7 @@ npm run check
 npm run build
 ```
 
-The production site was checked across desktop, mobile, keyboard, and reduced-motion states. Twenty-five additional browser journeys covered all four cases, data-flow traces, credential links, image inspection, navigation, and real 404 behavior. The independent evidence-only review scored **8.0/10**; this is a rubric estimate, not an official Awwwards award.
+The production site was verified across desktop, mobile, keyboard, and reduced-motion states. Automated browser journeys test all case studies, data-flow traces, credential links, navigation, and localized routing.
 
 Optional local browser verification, with the production preview running:
 
@@ -111,10 +111,10 @@ node scripts/check-localization.mjs http://127.0.0.1:4477
 node scripts/check-locale-spacing.mjs
 ```
 
-Screenshots and browser reports are local QA evidence, excluded from Git. See `QA.md` for measured performance, coverage, and known limits.
+Screenshots and browser reports are local QA evidence, excluded from Git.
 
 ## Content and credits
 
-Case studies paraphrase my public project READMEs. Screenshots and existing screen overviews come from my own projects. Professional background and education follow my LinkedIn profile as checked on 20 October 2026. The PUC-Rio program is in progress, expected October 2027. Certificate links point to Alura; no unavailable diploma files are presented as downloads.
+Case studies and screen overviews are drawn directly from my open-source repositories. Professional background, education, and credentials link directly to verified sources (including LinkedIn, IFMG, PUC-Rio, and Alura).
 
 Typography: [Switzer by Fontshare](https://www.fontshare.com/fonts/switzer) and [JetBrains Mono](https://www.jetbrains.com/lp/mono/), served as local WOFF2 files. The woven sculpture is procedural SVG art.
