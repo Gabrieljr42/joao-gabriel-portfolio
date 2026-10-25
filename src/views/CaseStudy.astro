@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Footer from '../components/Footer.astro';
 import Arrow from '../components/Arrow.astro';
@@ -12,10 +12,12 @@ const { locale, slug } = Astro.props;
 const { site, projects, caseEvidence, ui } = getContent(locale);
 const index = projects.findIndex(item => item.slug === slug);
 const project = projects[index];
+const socialPreview = await getImage({ src: project.cover, format: 'png' });
+const socialImage = { ...project.cover, src: socialPreview.src, format: 'png' as const };
 const next = projects[(index + 1) % projects.length];
 const href = (path: string) => localizedPath(path, locale);
 ---
-<Base locale={locale} title={project.title} description={project.description}>
+<Base locale={locale} title={project.title} description={project.description} socialImage={socialImage} socialImageAlt={project.alt}>
   <article class="case shell">
     <div class="case-top"><a class="text-link" href={href('/#work')}><Arrow direction="left" /><span>{site.labels.allWork}</span></a><p class="muted">{project.category}</p></div>
     <header class="case-heading"><h1>{project.title}</h1><div class="case-deck"><p>{project.description}</p><dl><div><dt>{site.labels.role}</dt><dd>{project.scope}</dd></div><div><dt>{site.labels.stack}</dt><dd>{project.tags.join(', ')}</dd></div></dl></div></header>

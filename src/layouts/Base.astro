@@ -1,10 +1,11 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import type { ImageMetadata } from 'astro';
 import { getContent } from '../i18n/content';
 import { localizedPath, withoutLocale, type Locale } from '../i18n/routing';
 import Header from '../components/Header.astro';
 import '../styles/site.css';
-interface Props { locale: Locale; title?: string; description?: string; }
+interface Props { locale: Locale; title?: string; description?: string; socialImage?: ImageMetadata; socialImageAlt?: string; }
 const { locale, title } = Astro.props;
 const { site, ui } = getContent(locale);
 const description = Astro.props.description || site.description;
@@ -12,6 +13,10 @@ const barePath = withoutLocale(Astro.url.pathname);
 const alternate = (language: Locale) => new URL(localizedPath(barePath, language), site.url).href;
 const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | ${ui.pageTitle}`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
+const socialImage = Astro.props.socialImage || { src: '/og.png', width: 1200, height: 630, format: 'png' };
+const socialImageUrl = new URL(socialImage.src, site.url).href;
+const socialImageAlt = Astro.props.socialImageAlt || `${site.name}: ${site.specialty}`;
+const socialImageType = socialImage.format === 'jpg' ? 'image/jpeg' : `image/${socialImage.format}`;
 const jsonLd = { '@context': 'https://schema.org', '@type': 'Person', name: site.fullName, jobTitle: site.role, url: site.url, sameAs: [site.github, site.linkedin], knowsAbout: locale === 'pt-br' ? ['Engenharia backend', 'Inteligência artificial aplicada', 'Desenvolvimento de software'] : ['Backend engineering', 'Applied AI', 'Software development'], email: `mailto:${site.email}`, alumniOf: { '@type': 'EducationalOrganization', name: 'Instituto Federal de Minas Gerais' } };
 ---
 <!doctype html>
@@ -20,7 +25,9 @@ const jsonLd = { '@context': 'https://schema.org', '@type': 'Person', name: site
     <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title><meta name="description" content={description} /><link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#151717" /><link rel="icon" href="/favicon.svg" type="image/svg+xml" /><link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta property="og:type" content="website" /><meta property="og:title" content={fullTitle} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={new URL('/og.png', site.url).href} /><meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:type" content="website" /><meta property="og:title" content={fullTitle} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImageUrl} /><meta property="og:image:alt" content={socialImageAlt} /><meta property="og:image:width" content={String(socialImage.width)} /><meta property="og:image:height" content={String(socialImage.height)} /><meta property="og:image:type" content={socialImageType} />
+    <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={fullTitle} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={socialImageUrl} /><meta name="twitter:image:alt" content={socialImageAlt} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" hreflang="en" href={alternate('en')} />
     <link rel="alternate" hreflang="pt-BR" href={alternate('pt-br')} />
