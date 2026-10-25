@@ -11,6 +11,11 @@ export const site = {
     cta: 'Ver projetos', location: 'No Brasil', since: 'Desenvolvendo desde 2020',
     sculpture: 'Três áreas. Uma prática conectada.',
   },
+  currentWork: {
+    label: 'No meu trabalho diário', company: 'Grupo Actcon', role: 'Desenvolvedor full stack', period: 'Junho de 2025 → atualmente',
+    text: 'Desenvolvo soluções em PHP e plugins personalizados para WordPress, além de integrar IA aos fluxos de trabalho da empresa.',
+    link: 'Experiência e formação',
+  },
   work: { title: 'Ideias que saem do papel.', intro: 'Uma seleção de projetos independentes.\nDo primeiro dado à interface final.', label: 'Projetos selecionados', all: 'Todos os repositórios' },
   about: {
     title: 'Eu cuido do\nproblema inteiro.',
@@ -59,7 +64,7 @@ export const projects = [
     category: 'Pipelines de dados · Mobile com suporte offline', summary: 'Informação pública que se torna útil.',
     description: 'Uma plataforma de inteligência para concursos públicos que conecta monitoramento de fontes, acompanhamento de mudanças em documentos e um aplicativo que funciona offline.',
     scope: 'Backend, pipelines de dados e sincronização mobile', type: 'Projeto independente',
-    alt: 'Interface web mobile do Observador com atualizações de concursos, lista de editais e acesso a itens salvos.',
+    alt: 'Captura da interface do projeto com o nome RadarConcursos, atualizações de concursos, lista de editais e acesso a itens salvos.',
     context: 'Os editais de concursos estão espalhados por portais institucionais. Datas mudam, documentos são atualizados e os candidatos precisam acompanhar tudo, mesmo com uma conexão instável.',
     idea: 'Reunir coleta, versionamento e acesso do candidato em um único sistema. Um catálogo com 99 definições de fontes alimenta os coletores em segundo plano; o aplicativo mantém uma cópia local e reconcilia as mudanças quando volta a se conectar.',
     decisions: [
@@ -67,7 +72,7 @@ export const projects = [
       { title: 'Separar as tarefas demoradas', text: 'Celery e Redis cuidam da coleta agendada, da extração e das novas tentativas. O FastAPI disponibiliza registros estruturados e pontos de controle para sincronização.' },
       { title: 'Continuar após perder a conexão', text: 'O cliente em React Native e Expo armazena os dados em SQLite. Favoritos e alertas entram em uma fila local de saída e são reconciliados com o backend após a reconexão.' },
     ],
-    media: [{ ...en.projects[1].media[0], alt: 'Estado registrado da interface do Observador com os editais mais recentes.', caption: 'Um estado registrado da interface. As contagens na tela refletem os dados de teste capturados, não o catálogo completo de conectores.' }],
+    media: [{ ...en.projects[1].media[0], alt: 'Captura da interface do projeto com o nome RadarConcursos e editais publicados.', caption: 'A interface capturada exibe o nome RadarConcursos. Este caso documenta o repositório ObservadorConcursos. As contagens na tela refletem os dados de teste capturados, não o catálogo completo de conectores.' }],
     outcome: 'API, worker, agendador, PostgreSQL e Redis em contêineres, além de um cliente mobile com suporte offline. O repositório inclui dados de teste dos conectores, verificações de idempotência e sincronização e documentação operacional. As 99 fontes compõem o catálogo configurado; isso não significa que todos os portais estejam ativos.',
   },
   {
@@ -106,10 +111,45 @@ export const projects = [
 
 export const contributions = en.contributions.map((contribution, index) => ({ ...contribution, title: [
   'Adiar a inicialização do JMX até a verificação do Actuator',
-  'Tipagem genérica de escopos do Eloquent para análise estática',
   'Cobertura para resultados nulos no mapeamento de erros',
   'Normalizar penalidades de código não utilizado na avaliação do repositório',
 ][index] }));
+
+export const caseEvidence: Record<string, en.CaseEvidence> = {
+  pensieve: {
+    ...en.caseEvidence.pensieve,
+    label: 'Evidências de uma execução real', title: 'O que o experimento mostrou.', dateLabel: '11 de outubro de 2026',
+    summary: 'Uma rodada real com o Gemini revelou falhas nas citações e limites do provedor. Esses achados mudaram a recuperação de evidências, a revisão das respostas e o tratamento de solicitações grandes.',
+    metrics: [{ value: '57', label: 'capítulos no corpus' }, { value: '914', label: 'páginas de texto-fonte' }, { value: '738', label: 'trechos indexados' }],
+    findings: [
+      { title: 'Citações exatas exigem mais que um prompt', text: 'O modelo alterava ou combinava citações livres. Agora seleciona IDs de trechos, e o backend resolve o texto e a posição na fonte original. Uma segunda revisão semântica confere cada afirmação factual contra os trechos citados.' },
+      { title: 'O contexto completo encontrou um limite real', text: 'As seis tentativas com escopos de um, dois e três livros falharam com HTTP 503 ou 429. A interface atual conta os tokens antes da geração e recusa solicitações de contexto completo acima de 30.000 tokens, sem cortar a fonte silenciosamente.' },
+      { title: 'A busca RAG precisava equilibrar os livros', text: 'As primeiras sínteses concentravam evidências em alguns livros. A busca passou a combinar candidatos por livro e ampliar trechos vizinhos. O relatório registra as falhas e as correções decorrentes delas.' },
+    ],
+    boundary: 'Esta rodada não demonstra que RAG é melhor que contexto completo: as seis tentativas grandes de contexto completo falharam antes de produzir uma resposta. A revisão por modelo é uma verificação, não uma garantia de correção. Textos privados e registros de sessão não são publicados.',
+    links: [
+      { ...en.caseEvidence.pensieve.links[0], label: 'Ler o relatório da verificação real' },
+      { ...en.caseEvidence.pensieve.links[1], label: 'Consultar os casos de avaliação' },
+    ],
+  },
+  observador: {
+    ...en.caseEvidence.observador,
+    label: 'Evidências de um piloto', title: 'Um sistema que dá para conferir.', dateLabel: '12 de setembro de 2026',
+    summary: 'O piloto documentado acompanhou registros reais da API até o cliente web. Busca, filtros, detalhes e histórico de revisões foram inspecionados, com os limites registrados junto dos resultados.',
+    metrics: [{ value: '32', label: 'seleções sincronizadas no cliente' }, { value: '31', label: 'fontes representadas no piloto' }, { value: '48', label: 'versões armazenadas' }],
+    findings: [
+      { title: 'Os dados chegaram à interface', text: 'Login, renovação de sessão, checkpoints, 32 detalhes e revisões passaram pelo proxy web. O navegador exibiu as 32 seleções; o filtro de inscrições abertas reduziu aquele resultado a oito.' },
+      { title: 'O mesmo edital não pode se multiplicar', text: 'O repositório inclui um teste controlado de idempotência: a primeira coleta cria um registro e uma versão; repetir a coleta com os mesmos dados não cria nenhum dos dois. É um teste com dados controlados, separado do piloto real.' },
+      { title: 'A reconciliação offline tem uma verificação própria', text: 'Scripts específicos cobrem favoritos, alertas e reabertura do app. Eles permitem inspecionar o fluxo de ida e volta esperado, mas o piloto de setembro não testou rede desconectada, aparelhos nativos nem novas ações offline.' },
+    ],
+    boundary: 'São resultados de um piloto datado, não um painel de disponibilidade ao vivo. Eles não certificam as 99 fontes configuradas. O relatório também registra localizações ausentes, publicações estruturadas vazias e rótulos de datas e mudanças pouco claros.',
+    links: [
+      { ...en.caseEvidence.observador.links[0], label: 'Ler o relatório do piloto e seus limites' },
+      { ...en.caseEvidence.observador.links[1], label: 'Consultar o teste de idempotência' },
+      { ...en.caseEvidence.observador.links[2], label: 'Consultar os scripts de verificação offline' },
+    ],
+  },
+};
 
 export const pipelineStages = [
   { name: 'Coletar', tools: 'Celery + Playwright', text: 'Workers agendados coletam editais públicos por HTTP, automação de navegador e extração de PDFs. O Redis organiza a fila e as novas tentativas. O registro da execução distingue um portal indisponível de outro sem novos editais.' },
@@ -123,7 +163,7 @@ export const background = {
   intro: 'O backend me deu uma base. Liderar uma equipe ampliou minha visão. Agora conecto essa experiência à nova geração de sistemas de inteligência artificial.',
   location: 'Conselheiro Lafaiete, Minas Gerais, Brasil',
   experience: [
-    { ...en.background.experience[0], role: 'Desenvolvedor full stack', period: 'Atualmente', text: 'Atuação do backend à interface, com base em PHP, Laravel, Java e bancos de dados relacionais.' },
+    { ...en.background.experience[0], role: 'Desenvolvedor full stack', period: 'Junho de 2025 → atualmente', text: 'Desenvolvo soluções em PHP e plugins personalizados para WordPress. Também integro IA aos fluxos de trabalho do dia a dia da empresa, com foco em apoiar os processos internos e melhorar os resultados.' },
     { ...en.background.experience[1], role: 'Desenvolvimento backend e liderança de equipe', period: 'Anteriormente · quase 4 anos', text: 'Liderei a equipe de desenvolvimento com foco em desempenho, segurança de dados e sistemas escaláveis.' },
   ],
   education: [

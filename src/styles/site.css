@@ -79,6 +79,21 @@
 .nav-link:focus-visible .nav-dot{translate:0 -4px}
 @media(hover:hover){.nav-link:hover .nav-dot{translate:0 -4px}}
 .case-image-link{margin-top:15px;font-size:12px;min-height:34px}.case-image-link .arrow{width:14px;height:14px}
+
+/* Professional context before the independent-project gallery. */
+.current-work{display:grid;grid-template-columns:1fr 1.65fr;gap:12%;padding-block:42px;margin-top:62px;border-block:1px solid var(--c-line)}
+.current-work .section-label{margin-bottom:16px}.current-work h2{font-size:32px;letter-spacing:-.045em;line-height:1.1}.current-work-role>p:not(.section-label){font-size:15px;margin-top:12px}.current-work-role>.period{display:block;margin-top:7px}
+.current-work-detail>p{font-size:clamp(21px,2vw,29px);line-height:1.45;letter-spacing:-.025em;max-width:710px}.current-work-detail .text-link{margin-top:22px}
+
+/* Dated evidence keeps results and their limits together. */
+.case-evidence-shortcut{margin-bottom:28px}
+.case-evidence{display:grid;grid-template-columns:1fr 2fr;gap:10%;margin-top:90px;padding-top:42px;border-top:1px solid var(--c-line)}
+.evidence-heading h2{font-size:clamp(28px,3vw,43px);letter-spacing:-.045em;line-height:1.12;max-width:340px}.evidence-heading time{display:block;font-family:var(--f-mono);font-size:12px;color:var(--c-muted);margin-top:22px}
+.evidence-summary{font-size:20px;line-height:1.5;letter-spacing:-.015em;max-width:720px}.evidence-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:35px 0}.evidence-metrics>div{display:flex;flex-direction:column;gap:9px}.evidence-metrics dt{order:2}.evidence-metrics dd{order:1}.evidence-metrics dd{font-size:clamp(34px,4vw,58px);line-height:1;letter-spacing:-.055em;color:var(--c-accent)}.evidence-metrics dt{font-size:12px;color:var(--c-muted);line-height:1.5;max-width:160px}
+.evidence-finding{border-top:1px solid var(--c-line)}.evidence-finding:last-child{border-bottom:1px solid var(--c-line)}.evidence-finding summary{display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:64px;padding:18px 4px;cursor:pointer;list-style:none;transition:background .3s var(--ease)}.evidence-finding summary::-webkit-details-marker{display:none}.evidence-finding h3{font-size:18px;font-weight:500;line-height:1.4;letter-spacing:-.02em}.evidence-finding summary .evidence-chevron{flex-shrink:0;width:17px;height:17px;color:var(--c-accent);transition:translate .3s var(--ease),rotate .3s var(--ease)}.evidence-finding[open] summary .evidence-chevron{rotate:180deg}.evidence-finding>p{color:var(--c-muted);font-size:16px;line-height:1.65;margin:14px 4px 24px}.evidence-finding summary:focus-visible{outline:2px solid var(--c-accent);outline-offset:4px}.evidence-finding summary:focus-visible .evidence-chevron{translate:0 3px}.evidence-finding summary:active{background:#2c302b}
+.evidence-boundary{font-size:14px;line-height:1.7;color:var(--c-muted);border-left:2px solid var(--c-accent);padding-left:18px;margin-top:28px}.evidence-links{display:grid;justify-items:start;gap:12px;margin-top:27px}.evidence-links .text-link{font-size:13px;line-height:1.5;padding-block:7px}.evidence-links .arrow{flex-shrink:0}
+@media(hover:hover){.evidence-finding summary:hover{background:#242a28}.evidence-finding summary:hover .evidence-chevron{translate:0 3px}}
+@media(max-width:700px){.current-work{display:block;margin-top:37px;padding-block:30px}.current-work h2{font-size:29px}.current-work-detail{margin-top:24px}.current-work-detail>p{font-size:21px}.current-work-detail .text-link{margin-top:17px}.case-evidence{display:block;margin-top:54px;padding-top:30px}.evidence-heading h2{font-size:34px;max-width:340px}.evidence-heading time{margin-top:15px}.evidence-body{margin-top:28px}.evidence-summary{font-size:18px}.evidence-metrics{gap:12px;margin-block:28px}.evidence-metrics dd{font-size:43px}.evidence-metrics dt{font-size:12px}.evidence-finding h3{font-size:17px}.evidence-finding summary{gap:16px}.evidence-boundary{font-size:14px}.evidence-links .text-link{gap:14px}}
 @media(max-width:700px){.pipeline-heading{display:flex;flex-direction:column;align-items:flex-start;gap:25px}.pipeline-heading h2{max-width:none;width:100%;font-size:31px;line-height:1.1}}
 
 /* The language is always visible, with a composed second header row on phones. */

@@ -1,0 +1,22 @@
+---
+import Arrow from './Arrow.astro';
+import { getContent } from '../i18n/content';
+import type { Locale } from '../i18n/routing';
+interface Props { locale: Locale; slug: string; }
+const { locale, slug } = Astro.props;
+const evidence = getContent(locale).caseEvidence[slug];
+---
+{evidence && <section class="case-evidence" id="evidence" aria-labelledby="evidence-title">
+  <div class="evidence-heading">
+    <p class="section-label">{evidence.label}</p>
+    <h2 id="evidence-title">{evidence.title}</h2>
+    <time datetime={evidence.date}>{evidence.dateLabel}</time>
+  </div>
+  <div class="evidence-body">
+    <p class="evidence-summary">{evidence.summary}</p>
+    <dl class="evidence-metrics">{evidence.metrics.map(metric => <div><dt>{metric.label}</dt><dd>{metric.value}</dd></div>)}</dl>
+    <div class="evidence-findings">{evidence.findings.map((finding, index) => <details class="evidence-finding" open={index === 0}><summary><h3>{finding.title}</h3><svg class="evidence-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 6 5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></summary><p>{finding.text}</p></details>)}</div>
+    <p class="evidence-boundary">{evidence.boundary}</p>
+    <ul class="evidence-links">{evidence.links.map(link => <li><a class="text-link" href={link.href} target="_blank" rel="noopener noreferrer"><span>{link.label}</span><Arrow /></a></li>)}</ul>
+  </div>
+</section>}

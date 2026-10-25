@@ -28,6 +28,11 @@ export const site = {
     cta: 'Selected work', location: 'Based in Brazil', since: 'Building since 2020',
     sculpture: 'Three disciplines. One connected practice.',
   },
+  currentWork: {
+    label: 'In my day-to-day work', company: 'Grupo Actcon', role: 'Full-stack developer', period: 'June 2025 → present',
+    text: 'I develop PHP and custom WordPress plugins, and integrate AI into the company’s everyday workflows.',
+    link: 'Experience & education',
+  },
   work: { title: 'Ideas, made real.', intro: 'A selection of independent projects.\nFrom the first data point to the final interface.', label: 'Selected projects', all: 'All repositories' },
   about: {
     title: 'I care about\nthe whole problem.',
@@ -77,7 +82,7 @@ export const projects = [
     description: 'A Brazilian public-exam intelligence platform connecting source monitoring, document change tracking, and an offline-first mobile app.',
     scope: 'Backend, data pipelines & mobile sync', type: 'Independent project',
     tags: ['FastAPI', 'PostgreSQL', 'Celery', 'React Native'],
-    cover: observador, alt: 'Observador mobile web interface showing public exam updates, a notice list, and saved-item navigation.',
+    cover: observador, alt: 'Recorded project interface labelled RadarConcursos, showing public exam updates, a notice list, and saved-item navigation.',
     tint: 'observador', placeholder: false,
     context: 'Exam announcements are spread across institutional portals. Dates move, documents change, and candidates need to keep up even when their connection is unreliable.',
     idea: 'Bring collection, versioning, and candidate access into one system. A catalog of 99 source definitions feeds background collectors; the mobile app keeps its own local copy and reconciles changes when it reconnects.',
@@ -86,7 +91,7 @@ export const projects = [
       { title: 'Give slow work its own lane', text: 'Celery and Redis handle scheduled crawling, parsing, and retries. FastAPI exposes structured records and synchronization checkpoints.' },
       { title: 'Work through a lost connection', text: 'The React Native and Expo client caches data in SQLite. Favorites and alerts enter a local outbox and reconcile against the backend after reconnection.' },
     ],
-    media: [ { image: observador, alt: 'Recorded Observador interface with the latest published exam notices.', caption: 'A recorded interface state. Source counts in the product screen reflect the captured test data, not the complete connector catalog.' } ],
+    media: [ { image: observador, alt: 'Recorded project interface labelled RadarConcursos with published exam notices.', caption: 'The captured interface displays the name RadarConcursos. This case documents the ObservadorConcursos repository. Screen counts reflect the captured test data, not the complete connector catalog.' } ],
     outcome: 'A containerized API, worker, scheduler, PostgreSQL, and Redis stack, plus an offline-first companion client. The repository includes connector fixtures, idempotency checks, synchronization verification, and operational documentation. 99 is the configured source catalog, not a claim that every portal is live.',
     href: 'https://github.com/Gabrieljr42/ObservadorConcursos',
   },
@@ -132,10 +137,55 @@ export const projects = [
 
 export const contributions = [
   { name: 'jvm-mcp', ecosystem: 'Java', title: 'Defer JMX initialization until the Actuator probe', href: 'https://github.com/oscarbol09/jvm-mcp/pull/85', reference: 'PR #85' },
-  { name: 'Larastan', ecosystem: 'PHP', title: 'Generic Eloquent scope typing for static analysis', href: 'https://github.com/larastan/larastan/pull/2605', reference: 'PR #2605' },
   { name: 'Vavr', ecosystem: 'Java', title: 'Coverage for null error-mapper results', href: 'https://github.com/vavr-io/vavr/pull/3372', reference: 'PR #3372' },
   { name: 'Repowise', ecosystem: 'Python', title: 'Normalize dead-code penalties in health scoring', href: 'https://github.com/repowise-dev/repowise/pull/4083', reference: 'PR #4083' },
 ];
+
+export interface CaseEvidence {
+  label: string;
+  title: string;
+  date: string;
+  dateLabel: string;
+  summary: string;
+  metrics: { value: string; label: string }[];
+  findings: { title: string; text: string }[];
+  boundary: string;
+  links: { label: string; href: string }[];
+}
+
+export const caseEvidence: Record<string, CaseEvidence> = {
+  pensieve: {
+    label: 'Evidence from a live run', title: 'What the experiment actually showed.', date: '2026-10-11', dateLabel: '11 October 2026',
+    summary: 'A real Gemini run exposed citation failures and provider limits. Those findings changed how the application retrieves evidence, reviews answers, and handles large requests.',
+    metrics: [{ value: '57', label: 'chapters in the corpus' }, { value: '914', label: 'pages of source text' }, { value: '738', label: 'indexed passages' }],
+    findings: [
+      { title: 'Exact quotations need more than a prompt', text: 'The model changed or combined free-form quotations. It now selects passage IDs, and the backend resolves the exact source text and position. A second semantic review checks each factual claim against its cited passages.' },
+      { title: 'Large Full Context requests hit a real boundary', text: 'Six attempts across one-, two-, and three-book scopes all failed with HTTP 503 or 429. The current interface counts input tokens before generation and rejects Full Context requests above 30,000 tokens without silently truncating the source.' },
+      { title: 'RAG retrieval needed balance across books', text: 'Early summaries overrepresented some books. Retrieval now combines candidates per book and expands neighbouring passages. The report records both the failures and the resulting corrections.' },
+    ],
+    boundary: 'This run does not establish that RAG is better than Full Context: all six large Full Context attempts failed before producing an answer. Model-based review is a check, not a guarantee of correctness. Private source texts and session records are not published.',
+    links: [
+      { label: 'Read the live verification report', href: 'https://github.com/Gabrieljr42/ThePensive/blob/main/docs/verification/live-gemini-2026-10-11.md' },
+      { label: 'Inspect the evaluation cases', href: 'https://github.com/Gabrieljr42/ThePensive/blob/main/backend/tests/live-scale-cases.json' },
+    ],
+  },
+  observador: {
+    label: 'Evidence from a pilot', title: 'A system you can inspect.', date: '2026-09-12', dateLabel: '12 September 2026',
+    summary: 'The documented pilot followed real records from the API to the web client. Search, filters, details and revision history were inspected, with remaining gaps recorded alongside the results.',
+    metrics: [{ value: '32', label: 'selections synced to the client' }, { value: '31', label: 'sources represented in the pilot' }, { value: '48', label: 'stored versions' }],
+    findings: [
+      { title: 'The data reached the interface', text: 'Login, session refresh, checkpoints, 32 detail records and revisions passed through the web proxy. The browser displayed the 32 selections; filtering for open applications reduced that recorded result to eight.' },
+      { title: 'The same notice must not multiply', text: 'The repository includes a controlled idempotency test: the first collection creates one record and version; a second collection with identical data creates neither. This is a fixture-based test, separate from the live pilot.' },
+      { title: 'Offline reconciliation has its own verification path', text: 'Dedicated scripts cover favourites, alerts and reopening the app. They provide a way to inspect the intended roundtrip, but the September pilot did not test a disconnected network, native devices or new offline actions.' },
+    ],
+    boundary: 'These are dated pilot results, not a live availability dashboard. They do not certify all 99 configured sources. The report also records missing locations, empty structured-publication data and confusing date and change labels.',
+    links: [
+      { label: 'Read the pilot report and limits', href: 'https://github.com/Gabrieljr42/ObservadorConcursos/blob/main/docs/VERIFICACAO-REAL-2026-09-12.md' },
+      { label: 'Inspect the idempotency test', href: 'https://github.com/Gabrieljr42/ObservadorConcursos/blob/main/backend/tests/test_idempotency.py' },
+      { label: 'Inspect the offline verification scripts', href: 'https://github.com/Gabrieljr42/ObservadorConcursos/tree/main/scripts/verification' },
+    ],
+  },
+};
 
 export const pipelineStages = [
   { name: 'Collect', tools: 'Celery + Playwright', text: 'Scheduled workers collect public notices using HTTP, browser automation, and PDF parsing. Redis queues the work and retries. A recorded execution distinguishes an unavailable portal from one with no new notices.' },
@@ -150,7 +200,7 @@ export const background = {
   intro: 'Backend development gave me a foundation. Leading a team broadened it. Now I’m connecting that experience with the next generation of AI systems.',
   location: 'Conselheiro Lafaiete, Minas Gerais, Brazil',
   experience: [
-    { company: 'Grupo Actcon', role: 'Full-stack developer', period: 'Current', text: 'Building across the backend and the interface, with a foundation in PHP, Laravel, Java, and relational databases.' },
+    { company: 'Grupo Actcon', role: 'Full-stack developer', period: 'June 2025 → present', text: 'I develop PHP solutions and custom WordPress plugins, and integrate AI into the company’s everyday workflows to support internal processes and results.' },
     { company: 'ECOM-D', role: 'Backend development & team leadership', period: 'Previously · nearly 4 years', text: 'Led the development team with a focus on performance, data security, and scalable systems.' },
   ],
   education: [
